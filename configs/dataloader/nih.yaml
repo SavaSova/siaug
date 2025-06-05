@@ -1,0 +1,22 @@
+defaults:
+  - default.yaml
+
+train:
+  dataset:
+    _target_: siaug.dataloaders.NIHDataset
+    csv_path: ${paths.data_dir}/cxr8/Data_Entry_2017_v2020.csv
+    images_dir: ${paths.data_dir}/cxr8/images
+    list_path: ${paths.data_dir}/cxr8/train_val_list.txt
+    img_transform: ???
+    lbl_transform: null
+    com_transform: null
+
+valid:
+  dataset:
+    _target_: siaug.dataloaders.NIHDataset
+    csv_path: ${paths.data_dir}/cxr8/Data_Entry_2017_v2020.csv
+    images_dir: ${paths.data_dir}/cxr8/images
+    list_path: ${paths.data_dir}/cxr8/test_list.txt
+    img_transform: ???
+    lbl_transform: null
+    com_transform: null

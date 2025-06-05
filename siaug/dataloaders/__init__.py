@@ -1,21 +1,22 @@
-from siaug.dataloaders.components import (
+from siaug.dataloaders.components import (  # MVDataset,
     BaseDataset,
     ChainDataset,
     CheXpertDataset,
     ImageNetDataset,
     MimicDataset,
-#    MVDataset,
+    NIHDataset,
+    VinDRDataset,
     ZipDataset,
-    VinDRDataset
 )
 
 __all__ = [
     "ImageNetDataset",
- #   "MVDataset",
+    #   "MVDataset",
     "CheXpertDataset",
     "ZipDataset",
     "BaseDataset",
     "ChainDataset",
     "MimicDataset",
-    "VinDRDataset"
+    "VinDRDataset",
+    "NIHDataset",
 ]
