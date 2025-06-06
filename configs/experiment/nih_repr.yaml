@@ -6,11 +6,12 @@ defaults:
 # general settings
 task_name: repr_nih_baseline
 tags: ["${model.backbone}", "repr", "nih"]
+max_epoch: 5
 
 # override dataloader settings
 dataloader:
   train:
-    batch_size: 256
+    batch_size: 32
     dataset:
       # only keep the image, dispose the text and labels
       com_transform:
@@ -22,7 +23,7 @@ dataloader:
           _target_: torchvision.transforms.Compose
           transforms:
             - _target_: torchvision.transforms.RandomResizedCrop
-              size: 224
+              size: 192
               scale: [0.2, 1.]
             - _target_: torchvision.transforms.RandomApply
               p: 0.8
@@ -46,7 +47,7 @@ dataloader:
           _target_: torchvision.transforms.Compose
           transforms:
             - _target_: torchvision.transforms.RandomResizedCrop
-              size: 224
+              size: 192
               scale: [0.2, 1.]
             - _target_: torchvision.transforms.RandomApply
               p: 0.8
