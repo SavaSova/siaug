@@ -30,7 +30,7 @@ tags: ["${model.backbone}"]
 # log frequency
 log_every_n_steps: 10
 
-# start trainig at epoch n
+# start training at epoch n
 start_epoch: 0
 
 # stop training at epoch n
@@ -43,7 +43,7 @@ resume_from_ckpt: null
 ckpt_dir: ${paths.output_dir}/checkpoints
 
 # checkpoint frequency
-ckpt_every_n_epochs: 10
+ckpt_every_n_epochs: 2
 
 # seed for random number generators in pytorch, numpy and python.random
 # sets cudnn to deterministic too
