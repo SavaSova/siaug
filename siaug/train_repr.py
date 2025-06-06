@@ -5,7 +5,7 @@ import pyrootutils
 import torch
 from accelerate import Accelerator
 from hydra.utils import instantiate
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 from torch import nn
 from torch.utils.data import DataLoader
 
@@ -23,6 +23,9 @@ def main(cfg: DictConfig):
     """Train SimSiam based on a Hydra configuration (distributed)."""
 
     print(f"=> Starting [experiment={cfg['task_name']}]")
+    # store the original Hydra config for logging before instantiation
+    log_cfg = OmegaConf.to_container(cfg, resolve=True)
+
     print("=> Initializing Hydra configuration")
     cfg = instantiate(cfg)
 
@@ -37,7 +40,7 @@ def main(cfg: DictConfig):
     logger_kwargs = {"wandb": cfg.get("logger", None)}
 
     accelerator = Accelerator(log_with=logger_name, split_batches=True)
-    accelerator.init_trackers("siaug", config=cfg, init_kwargs=logger_kwargs)
+    accelerator.init_trackers("siaug", config=log_cfg, init_kwargs=logger_kwargs)
     device = accelerator.device
 
     # instantiate dataloaders
@@ -73,7 +76,10 @@ def main(cfg: DictConfig):
     start_epoch = cfg["start_epoch"]
     if cfg["resume_from_ckpt"] is not None:
         accelerator.load_state(cfg["resume_from_ckpt"])
-        custom_ckpt = torch.load(os.path.join(cfg["resume_from_ckpt"], "custom_checkpoint_0.pkl"))
+        custom_ckpt = torch.load(
+            os.path.join(cfg["resume_from_ckpt"], "custom_checkpoint_0.pkl"),
+            map_location="cpu",
+        )  # nosec B614
         start_epoch = custom_ckpt["last_epoch"]
 
     print(f"=> Starting model training [epochs={cfg['max_epoch']}]")
