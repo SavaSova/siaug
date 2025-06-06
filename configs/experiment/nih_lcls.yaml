@@ -8,7 +8,7 @@ defaults:
 
 # general settings
 task_name: lcls_nih_baseline
-max_epoch: 90
+max_epoch: 30
 
 # override dataloader settings
 dataloader:
@@ -49,10 +49,10 @@ dataloader:
 
 # override model settings
 model:
-  backbone: ???
+  backbone: resnet50
   num_channels: 3
   num_classes: 15
-  ckpt_path: ???
+  ckpt_path: "D:/Code/siaug-2025/siaug/logs/repr_nih_baseline/runs/2025-06-06_16-26-50/checkpoints/last.pt"
 
 # optimizer for linear eval
 optimizer:
