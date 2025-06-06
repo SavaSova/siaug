@@ -6,7 +6,7 @@ defaults:
 # general settings
 task_name: repr_nih_baseline
 tags: ["${model.backbone}", "repr", "nih"]
-max_epoch: 5
+max_epoch: 6
 
 # override dataloader settings
 dataloader:
