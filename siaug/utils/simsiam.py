@@ -9,7 +9,9 @@ class CosineScheduler(_LRScheduler):
         self.max_epochs = max_epochs
 
         # last epoch should always be -1, use load_state_dict to resume
-        super().__init__(optimizer, -1, verbose)
+        # PyTorch 2.0 uses keyword-only arguments for last_epoch and verbose,
+        # so pass them explicitly to support newer versions
+        super().__init__(optimizer, last_epoch=-1, verbose=verbose)
 
     def _compute_lr(self, param_group):
         init_lr = param_group["initial_lr"]
