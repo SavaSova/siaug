@@ -34,6 +34,10 @@ def lcls_eval(
         prefix="Test: ",
     )
 
+    # collect outputs and targets for metric computation
+    all_outputs: List[torch.Tensor] = []
+    all_targets: List[torch.Tensor] = []
+
     # switch to eval mode (train mode might change BatchNorm running mean/std)
     model.eval()
 
@@ -52,9 +56,9 @@ def lcls_eval(
             # metrics
             losses.update(loss.item(), images.size(0))
 
-            output, targets = accelerator.gather_for_metrics((output, targets))
-            for idx, (_, metric) in enumerate(metrics):
-                _metrics[idx].update(metric(output, targets.long()).item(), images.size(0))
+            gathered_output, gathered_targets = accelerator.gather_for_metrics((output, targets))
+            all_outputs.append(gathered_output)
+            all_targets.append(gathered_targets)
 
             # measure elapsed time
             batch_time.update(time() - end)
@@ -76,15 +80,27 @@ def lcls_eval(
                         "valid/step_batch_time": batch_time.val,
                     }
 
-                    # log metrics
-                    for idx, (name, _) in enumerate(metrics):
-                        log_data[f"valid/epoch_{name}"] = _metrics[idx].avg
-                        log_data[f"valid/step_{name}"] = _metrics[idx].val
-
                     accelerator.log(log_data)
 
             if fast_dev_run:
                 break
+
+        # concatenate outputs and targets for metric computation
+        if len(all_outputs) > 0:
+            all_outputs = torch.cat(all_outputs)
+            all_targets = torch.cat(all_targets)
+
+            for idx, (_, metric) in enumerate(metrics):
+                val = metric(all_outputs, all_targets.long())
+                if isinstance(val, torch.Tensor):
+                    val = val.item()
+                _metrics[idx].update(val)
+
+            if is_logging:
+                log_data = {"valid/final_loss": losses.avg}
+                for idx, (name, _) in enumerate(metrics):
+                    log_data[f"valid/final_{name}"] = _metrics[idx].avg
+                accelerator.log(log_data)
 
     out_metric = _metrics[0].avg if len(_metrics) > 0 else losses.avg
     return out_metric
