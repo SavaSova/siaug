@@ -80,10 +80,14 @@ class NIHDataset(Dataset):
             lbls = [lb.strip() for lb in labels.split("|")]
             return [1 if c in lbls else 0 for c in columns]
 
-        lbls = df.get_column("Finding Labels").map_elements(encode_labels).to_list()
+        lbls = (
+            df.get_column("Finding Labels")
+            .map_elements(encode_labels, return_dtype=pl.List(pl.Int8))
+            .to_list()
+        )
         imgs = (
             df.get_column("Image Index")
-            .map_elements(lambda x: os.path.join(images_dir, x))
+            .map_elements(lambda x: os.path.join(images_dir, x), return_dtype=pl.Utf8)
             .to_list()
         )
         self.samples = list(zip(imgs, lbls))
