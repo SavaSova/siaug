@@ -13,7 +13,7 @@ max_epoch: 30
 # override dataloader settings
 dataloader:
   train:
-    batch_size: 256
+    batch_size: 512
     dataset:
       com_transform:
         _target_: siaug.augmentations.ExtractKeys
@@ -30,7 +30,7 @@ dataloader:
             std: [0.2895694, 0.2895694, 0.2895694]
 
   valid:
-    batch_size: 256
+    batch_size: 512
     dataset:
       com_transform:
         _target_: siaug.augmentations.ExtractKeys
