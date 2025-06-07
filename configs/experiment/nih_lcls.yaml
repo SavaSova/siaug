@@ -8,12 +8,12 @@ defaults:
 
 # general settings
 task_name: lcls_nih_baseline
-max_epoch: 30
+max_epoch: 20
 
 # override dataloader settings
 dataloader:
   train:
-    batch_size: 512
+    batch_size: 128
     dataset:
       com_transform:
         _target_: siaug.augmentations.ExtractKeys
@@ -30,7 +30,7 @@ dataloader:
             std: [0.2895694, 0.2895694, 0.2895694]
 
   valid:
-    batch_size: 512
+    batch_size: 128
     dataset:
       com_transform:
         _target_: siaug.augmentations.ExtractKeys
