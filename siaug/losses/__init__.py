@@ -11,6 +11,7 @@ __all__ = [
     "SimSiamLoss",
     "NTXentLoss",
     "ConVIRTLoss",
+    "FocalLoss",
     "TriPodLoss",
 ]
 
@@ -82,6 +83,31 @@ class ConVIRTLoss(nn.Module):
     def forward(self, inputs: Dict[str, Tensor]) -> Tensor:
         img_proj, txt_proj = inputs["z1"], inputs["z2"]
         return ntxent_loss(img_proj, txt_proj, self.tau, self.weight, self.num_stability)
+
+
+class FocalLoss(nn.Module):
+    """Binary focal loss useful for imbalanced datasets."""
+
+    def __init__(
+        self,
+        gamma: float = 2.0,
+        weight: torch.Tensor | None = None,
+        reduction: str = "mean",
+    ) -> None:
+        super().__init__()
+        self.gamma = gamma
+        self.reduction = reduction
+        self.bce = nn.BCEWithLogitsLoss(weight=weight, reduction="none")
+
+    def forward(self, inputs: Tensor, targets: Tensor) -> Tensor:
+        loss = self.bce(inputs, targets.float())
+        pt = torch.exp(-loss)
+        focal_loss = (1 - pt) ** self.gamma * loss
+        if self.reduction == "mean":
+            return focal_loss.mean()
+        if self.reduction == "sum":
+            return focal_loss.sum()
+        return focal_loss
 
 
 class TriPodLoss(nn.Module):
