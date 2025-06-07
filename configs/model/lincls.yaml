@@ -12,5 +12,5 @@ num_classes: ???
 # freeze all layers except the fc
 freeze: True
 
-# restart from checkpoint, use pretrained arg for imagenet weights (see timm)
+# restart from checkpoint (`model.safetensors` or `pytorch_model.bin`)
 ckpt_path: ???
