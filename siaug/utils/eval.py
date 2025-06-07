@@ -54,7 +54,7 @@ def lcls_eval(
 
             output, targets = accelerator.gather_for_metrics((output, targets))
             for idx, (_, metric) in enumerate(metrics):
-                _metrics[idx].update(metric(output, targets).item(), images.size(0))
+                _metrics[idx].update(metric(output, targets.long()).item(), images.size(0))
 
             # measure elapsed time
             batch_time.update(time() - end)
