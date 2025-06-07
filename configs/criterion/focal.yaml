@@ -1,0 +1,3 @@
+_target_: siaug.losses.FocalLoss
+gamma: 2.0
+reduction: mean
