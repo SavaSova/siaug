@@ -52,7 +52,7 @@ model:
   backbone: resnet50
   num_channels: 3
   num_classes: 15
-  ckpt_path: "D:/Code/siaug-2025/siaug/logs/repr_nih_baseline/runs/2025-06-06_16-26-50/checkpoints/last.pt"
+  ckpt_path: "D:/Code/siaug-2025/siaug/logs/repr_nih_baseline/runs/2025-06-06_16-26-50/checkpoints/last.pt/model.safetensors"
 
 # optimizer for linear eval
 optimizer:
