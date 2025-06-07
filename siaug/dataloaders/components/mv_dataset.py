@@ -124,7 +124,7 @@ class MVDataset(Dataset):
     def save_split(self, path: os.PathLike):
         """Save the current split to disk."""
 
-        with open(path) as f:
+        with open(path, "w") as f:
             json.dump(self.samples, f)
 
     def compute_normalization_constants(self, limit: int = None) -> Tuple[float, float]:
@@ -149,14 +149,14 @@ class MVDataset(Dataset):
     def to_axis(plane: str) -> Optional[str]:
         """Convert plane to axis name."""
 
-        assert plane is None or plane in ["axial", "z", "coronal", "y", "saggital", "x"]
+        assert plane is None or plane in ["axial", "z", "coronal", "y", "sagittal", "x"]
         return (
             {
                 "axial": -1,
                 "z": -1,
                 "coronal": -3,
                 "y": -3,
-                "saggital": -2,
+                "sagittal": -2,
                 "x": -2,
             }
         ).get(plane, None)
