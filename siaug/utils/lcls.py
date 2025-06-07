@@ -56,7 +56,7 @@ def lcls_epoch(
 
         # update metrics
         for idx, (_, metric) in enumerate(metrics):
-            _metrics[idx].update(metric(output, targets).item(), images.size(0))
+            _metrics[idx].update(metric(output, targets.long()).item(), images.size(0))
 
         # compute gradient and do SGD step
         optimizer.zero_grad()
