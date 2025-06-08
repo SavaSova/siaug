@@ -55,6 +55,9 @@ def main(cfg: DictConfig):
     model = cfg["model"].to(device)
     model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
 
+    # move the criterion to the correct device
+    criterion = cfg["criterion"].to(device)
+
     # build optimizer from a partial optimizer
     print(f"=> Instantiating the optimizer [device={device}")
     params = list(filter(lambda p: p.requires_grad, model.parameters()))
@@ -95,7 +98,7 @@ def main(cfg: DictConfig):
             accelerator=accelerator,
             dataloader=train_dataloader,
             model=model,
-            criterion=cfg["criterion"],
+            criterion=criterion,
             optimizer=optimizer,
             metrics=cfg["metrics"],
             is_logging=is_logging,
@@ -111,7 +114,7 @@ def main(cfg: DictConfig):
             accelerator=accelerator,
             dataloader=valid_dataloader,
             model=model,
-            criterion=cfg["criterion"],
+            criterion=criterion,
             metrics=cfg["metrics"],
             is_logging=is_logging,
             log_every_n_steps=cfg["log_every_n_steps"],

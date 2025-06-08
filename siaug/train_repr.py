@@ -52,6 +52,9 @@ def main(cfg: DictConfig):
     model = cfg["model"].to(device)
     model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
 
+    # move the criterion to the correct device
+    criterion = cfg["criterion"].to(device)
+
     # optimizer
     # infer learning rate before changing the batch size
     print(f"=> Instantiating optimizer [device={device}]")
@@ -90,7 +93,7 @@ def main(cfg: DictConfig):
             accelerator=accelerator,
             dataloader=train_dataloader,
             model=model,
-            criterion=cfg["criterion"],
+            criterion=criterion,
             optimizer=optimizer,
             is_logging=is_logging,
             log_every_n_steps=cfg["log_every_n_steps"],
