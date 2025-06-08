@@ -1,5 +1,5 @@
 import math
-from typing import Dict
+from typing import Dict, Sequence
 
 import torch
 from torch import Tensor, nn
@@ -91,13 +91,17 @@ class FocalLoss(nn.Module):
     def __init__(
         self,
         gamma: float = 2.0,
-        weight: torch.Tensor | None = None,
-        pos_weight: torch.Tensor | None = None,
+        weight: torch.Tensor | Sequence[float] | None = None,
+        pos_weight: torch.Tensor | Sequence[float] | None = None,
         reduction: str = "mean",
     ) -> None:
         super().__init__()
         self.gamma = gamma
         self.reduction = reduction
+        if pos_weight is not None and not isinstance(pos_weight, torch.Tensor):
+            pos_weight = torch.tensor(pos_weight, dtype=torch.float)
+        if weight is not None and not isinstance(weight, torch.Tensor):
+            weight = torch.tensor(weight, dtype=torch.float)
         self.bce = nn.BCEWithLogitsLoss(
             weight=weight, pos_weight=pos_weight, reduction="none"
         )
