@@ -97,11 +97,12 @@ class FocalLoss(nn.Module):
     ) -> None:
         super().__init__()
         self.gamma = gamma
-        self.reduction = reduction
+        self.reduction = reduction        
         if pos_weight is not None and not isinstance(pos_weight, torch.Tensor):
             pos_weight = torch.tensor(pos_weight, dtype=torch.float)
         if weight is not None and not isinstance(weight, torch.Tensor):
             weight = torch.tensor(weight, dtype=torch.float)
+
         self.bce = nn.BCEWithLogitsLoss(
             weight=weight, pos_weight=pos_weight, reduction="none"
         )
