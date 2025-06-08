@@ -72,6 +72,10 @@ model:
   num_classes: 15
   freeze: False
   ckpt_path: D:/Code/siaug-2025/siaug/logs/lcls_nih_improved/runs/2025-06-07_22-19-43/checkpoints/best.pt/model.safetensors
+  # load checkpoint without stripping the encoder prefix
+  prefix: null
+  # keep the pretrained linear head
+  reset_head: false
 
 # optimizer for fine tuning
 optimizer:
