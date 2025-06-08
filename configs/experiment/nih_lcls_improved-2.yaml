@@ -3,7 +3,7 @@
 defaults:
   - override /dataloader: nih.yaml
   - override /model: lincls.yaml
-  - override /criterion: focal.yaml
+  - override /criterion: focal_pos_weight.yaml
   - override /metrics: nih.yaml
 
 # general settings
