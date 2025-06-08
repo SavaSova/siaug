@@ -92,12 +92,15 @@ class FocalLoss(nn.Module):
         self,
         gamma: float = 2.0,
         weight: torch.Tensor | None = None,
+        pos_weight: torch.Tensor | None = None,
         reduction: str = "mean",
     ) -> None:
         super().__init__()
         self.gamma = gamma
         self.reduction = reduction
-        self.bce = nn.BCEWithLogitsLoss(weight=weight, reduction="none")
+        self.bce = nn.BCEWithLogitsLoss(
+            weight=weight, pos_weight=pos_weight, reduction="none"
+        )
 
     def forward(self, inputs: Tensor, targets: Tensor) -> Tensor:
         loss = self.bce(inputs, targets.float())

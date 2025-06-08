@@ -26,6 +26,17 @@ pre-commit
 
 Make sure to update the `.env` file according to the setup of your cluster and placement of your project folder on disk. Also, run `accelerate config` to generate a config file, and copy it from `~/cache/huggingface/accelerate/default_config.yaml` to the project directory. Finally, create symlinks from the `data/` folder to the datasets you would want to train on.
 
+### Class imbalance
+
+For the NIH dataset you can compute class weights to mitigate label imbalance.
+Run the helper script below and copy the resulting weights into
+`configs/criterion/focal_pos_weight.yaml` or override them via the command line.
+
+```bash
+python scripts/compute_nih_pos_weights.py /path/to/Data_Entry_2017_v2020.csv \
+    /path/to/images --list_path /path/to/train_val_list.txt
+```
+
 ## Training
 
 Currently, we support two modes of training: pretraining and linear evaluation.
