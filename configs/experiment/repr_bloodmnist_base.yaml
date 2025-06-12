@@ -1,0 +1,21 @@
+# @package _global_
+
+defaults:
+  - override /dataloader: bloodmnist.yaml
+
+# general settings
+task_name: ???
+
+dataloader:
+  train:
+    batch_size: 256
+    dataset:
+      com_transform:
+        _target_: siaug.augmentations.ExtractKeys
+        keys: ["img"]
+      img_transform: ???
+  valid: null
+
+model:
+  backbone: ???
+  num_channels: 3
