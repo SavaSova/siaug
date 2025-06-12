@@ -1,0 +1,20 @@
+defaults:
+  - default.yaml
+
+train:
+  dataset:
+    _target_: siaug.dataloaders.BloodMNISTDataset
+    root: ${paths.data_dir}/bloodmnist_png
+    split: train
+    img_transform: ???
+    lbl_transform: null
+    com_transform: null
+
+valid:
+  dataset:
+    _target_: siaug.dataloaders.BloodMNISTDataset
+    root: ${paths.data_dir}/bloodmnist_png
+    split: val
+    img_transform: ???
+    lbl_transform: null
+    com_transform: null
