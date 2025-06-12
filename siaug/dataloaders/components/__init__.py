@@ -1,4 +1,5 @@
 from siaug.dataloaders.components.base_dataset import BaseDataset
+from siaug.dataloaders.components.bloodmnist_dataset import BloodMNISTDataset
 from siaug.dataloaders.components.chain_dataset import ChainDataset
 from siaug.dataloaders.components.chexpert_dataset import CheXpertDataset
 from siaug.dataloaders.components.imagenet_dataset import ImageNetDataset
@@ -19,4 +20,5 @@ __all__ = [
     "MimicDataset",
     "VinDRDataset",
     "NIHDataset",
+    "BloodMNISTDataset",
 ]

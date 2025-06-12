@@ -1,5 +1,6 @@
 from siaug.dataloaders.components import (  # MVDataset,
     BaseDataset,
+    BloodMNISTDataset,
     ChainDataset,
     CheXpertDataset,
     ImageNetDataset,
@@ -17,6 +18,7 @@ __all__ = [
     "BaseDataset",
     "ChainDataset",
     "MimicDataset",
+    "BloodMNISTDataset",
     "VinDRDataset",
     "NIHDataset",
 ]
