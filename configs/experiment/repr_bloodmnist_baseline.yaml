@@ -31,6 +31,7 @@ dataloader:
                 - _target_: siaug.augmentations.simsiam.GaussianBlur
                   sigma: [.1, 2.]
             - _target_: torchvision.transforms.RandomHorizontalFlip
+              p: 0.5
             - _target_: torchvision.transforms.ToTensor
             - _target_: torchvision.transforms.Normalize
               mean: [0.5, 0.5, 0.5]
@@ -40,7 +41,7 @@ dataloader:
           transforms:
             - _target_: torchvision.transforms.RandomResizedCrop
               size: 224
-              scale: [0.2, 1.]
+              scale: [0.4, 1.]
             - _target_: torchvision.transforms.RandomApply
               p: 0.8
               transforms:
@@ -53,8 +54,9 @@ dataloader:
               p: 0.5
               transforms:
                 - _target_: siaug.augmentations.simsiam.GaussianBlur
-                  sigma: [.1, 2.]
+                  sigma: [.2, 2.]
             - _target_: torchvision.transforms.RandomHorizontalFlip
+              p: 0.8
             - _target_: torchvision.transforms.ToTensor
             - _target_: torchvision.transforms.Normalize
               mean: [0.5, 0.5, 0.5]
