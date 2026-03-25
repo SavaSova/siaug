@@ -1,0 +1,22 @@
+- - "AUROC@Binary"
+  - _partial_: true
+    _target_: torchmetrics.functional.classification.binary_auroc
+- - "AUPRC@Binary"
+  - _partial_: true
+    _target_: torchmetrics.functional.classification.binary_average_precision
+- - "Accuracy@Binary"
+  - _partial_: true
+    _target_: torchmetrics.functional.classification.binary_accuracy
+    threshold: 0.5
+- - "F1@Binary"
+  - _partial_: true
+    _target_: torchmetrics.functional.classification.binary_f1_score
+    threshold: 0.5
+- - "Precision@Binary"
+  - _partial_: true
+    _target_: torchmetrics.functional.classification.binary_precision
+    threshold: 0.5
+- - "Recall@Binary"
+  - _partial_: true
+    _target_: torchmetrics.functional.classification.binary_recall
+    threshold: 0.5

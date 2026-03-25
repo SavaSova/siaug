@@ -8,7 +8,7 @@ task_name: ???
 
 dataloader:
   train:
-    batch_size: 256
+    batch_size: 64
     dataset:
       com_transform:
         _target_: siaug.augmentations.ExtractKeys

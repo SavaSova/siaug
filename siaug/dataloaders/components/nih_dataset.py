@@ -7,7 +7,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 from tqdm.auto import tqdm
 
-__all__ = ["NIHDataset", "NIH_PATHOLOGIES"]
+__all__ = ["NIHDataset", "NIHBinaryDataset", "NIH_PATHOLOGIES"]
 
 NIH_PATHOLOGIES = [
     "Atelectasis",
@@ -118,3 +118,41 @@ class NIHDataset(Dataset):
             arr.append(np.ravel(self[idx]["img"]))
         arr = np.concatenate(arr)
         return float(np.mean(arr)), float(np.std(arr))
+
+
+class NIHBinaryDataset(NIHDataset):
+    """Binary NIH ChestX-ray14 dataset for abnormality detection.
+
+    The target is:
+    - ``0`` if the image is labeled only as ``No Finding``
+    - ``1`` if any pathology is present
+    """
+
+    def make_dataset(
+        self,
+        csv_path: os.PathLike,
+        images_dir: os.PathLike,
+        list_path: os.PathLike | None,
+        columns: List[str],
+    ) -> None:
+        df = pl.read_csv(csv_path, infer_schema_length=1000)
+        if list_path is not None:
+            with open(list_path) as f:
+                names = {line.strip() for line in f if line.strip()}
+            df = df.filter(pl.col("Image Index").is_in(names))
+
+        def encode_binary_label(labels: str) -> list[int]:
+            lbls = [lb.strip() for lb in labels.split("|")]
+            return [0 if lbls == ["No Finding"] else 1]
+
+        lbls = (
+            df.get_column("Finding Labels")
+            .map_elements(encode_binary_label, return_dtype=pl.List(pl.Int8))
+            .to_list()
+        )
+        imgs = (
+            df.get_column("Image Index")
+            .map_elements(lambda x: os.path.join(images_dir, x), return_dtype=pl.Utf8)
+            .to_list()
+        )
+        self.samples = list(zip(imgs, lbls))

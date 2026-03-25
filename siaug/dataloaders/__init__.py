@@ -5,6 +5,7 @@ from siaug.dataloaders.components import (  # MVDataset,
     CheXpertDataset,
     ImageNetDataset,
     MimicDataset,
+    NIHBinaryDataset,
     NIHDataset,
     VinDRDataset,
     ZipDataset,
@@ -21,4 +22,5 @@ __all__ = [
     "BloodMNISTDataset",
     "VinDRDataset",
     "NIHDataset",
+    "NIHBinaryDataset",
 ]

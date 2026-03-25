@@ -4,7 +4,7 @@ defaults:
 train:
   dataset:
     _target_: siaug.dataloaders.BloodMNISTDataset
-    root: ${paths.data_dir}/bloodmnist_png
+    root: ${paths.data_dir}/MedMNIST/bloodmnist_png
     split: train
     img_transform: ???
     lbl_transform: null
@@ -13,7 +13,7 @@ train:
 valid:
   dataset:
     _target_: siaug.dataloaders.BloodMNISTDataset
-    root: ${paths.data_dir}/bloodmnist_png
+    root: ${paths.data_dir}/MedMNIST/bloodmnist_png
     split: val
     img_transform: ???
     lbl_transform: null
