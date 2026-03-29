@@ -11,6 +11,7 @@ __all__ = ["convirt_eval"]
 
 
 def convirt_eval(
+    epoch: int,
     accelerator: Accelerator,
     dataloader: DataLoader,
     model: nn.Module,
@@ -57,17 +58,20 @@ def convirt_eval(
 
                 # wandb
                 if is_logging:
+                    global_step = len(dataloader) * epoch + i
                     # log progress, loss, and performance
                     log_data = {
                         "valid/epoch_loss": losses.avg,
                         "valid/epoch_batch_time": batch_time.avg,
                         "valid/epoch_data_time": data_time.avg,
+                        "valid/step": i,
+                        "valid/step_global": global_step,
                         "valid/step_loss": losses.val,
                         "valid/step_data_time": data_time.val,
                         "valid/step_batch_time": batch_time.val,
                     }
 
-                    accelerator.log(log_data)
+                    accelerator.log(log_data, step=global_step)
 
             if fast_dev_run:
                 break

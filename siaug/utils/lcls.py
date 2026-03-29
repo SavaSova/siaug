@@ -37,8 +37,9 @@ def lcls_epoch(
         prefix=f"Epoch: [{epoch}]",
     )
 
-    # switch to eval mode (train mode might change BatchNorm running mean/std)
-    model.eval()
+    # use train mode so the classification model updates in the expected regime
+    # (especially important for BatchNorm / Dropout during baseline and fine-tuning)
+    model.train()
 
     end = time()
     for i, batch in enumerate(dataloader):
@@ -76,6 +77,7 @@ def lcls_epoch(
 
             # wandb
             if is_logging:
+                global_step = len(dataloader) * epoch + i
                 # log progress, loss, and performance
                 log_data = {
                     "epoch": epoch,
@@ -83,7 +85,7 @@ def lcls_epoch(
                     "epoch/batch_time": batch_time.avg,
                     "epoch/data_time": data_time.avg,
                     "step": i,
-                    "step/global": len(dataloader) * epoch + i,
+                    "step/global": global_step,
                     "step/loss": losses.val,
                     "step/data_time": data_time.val,
                     "step/batch_time": batch_time.val,
@@ -100,7 +102,7 @@ def lcls_epoch(
                     log_data[f"{name}/weight_decay"] = pg["weight_decay"]
                     log_data[f"{name}/lr"] = pg["lr"]
 
-                accelerator.log(log_data)
+                accelerator.log(log_data, step=global_step)
 
         if fast_dev_run:
             break

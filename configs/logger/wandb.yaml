@@ -1,3 +1,4 @@
+backend: wandb
 # project: siaug  # accelerate converts this to "project"
 entity: savasova-academic
 id: null

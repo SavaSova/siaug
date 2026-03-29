@@ -1,9 +1,9 @@
 # @package _global_
 
 defaults:
-  - override /dataloader: nih_binary.yaml
+  - override /dataloader: nih_binary_holdout.yaml
   - override /model: lincls.yaml
-  - override /criterion: bce.yaml
+  - override /criterion: bce_binary_pos_weight.yaml
   - override /metrics: binary.yaml
 
 task_name: lcls_nih_binary_finetune
@@ -50,7 +50,7 @@ model:
   num_channels: 3
   num_classes: 1
   freeze: false
-  ckpt_path: D:/Code/siaug-2025/siaug/logs/repr_nih_baseline/runs/2025-06-06_16-26-50/checkpoints/last.pt/model.safetensors
+  ckpt_path: ???
 
 optimizer:
   lr: 0.05

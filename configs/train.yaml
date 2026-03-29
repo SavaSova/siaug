@@ -11,7 +11,7 @@ defaults:
   - optimizer: default.yaml
   - criterion: simsiam.yaml
 
-  # supported loggers: wandb
+  # supported loggers: wandb, tensorboard
   - logger: null
 
   # keep track of metrics during the experiment

@@ -1,9 +1,9 @@
 # @package _global_
 
 defaults:
-  - override /dataloader: nih_binary.yaml
+  - override /dataloader: nih_binary_holdout.yaml
   - override /model: lincls.yaml
-  - override /criterion: bce.yaml
+  - override /criterion: bce_binary_pos_weight.yaml
   - override /metrics: binary.yaml
 
 task_name: lcls_nih_binary_baseline
@@ -11,7 +11,7 @@ max_epoch: 20
 
 dataloader:
   train:
-    batch_size: 16
+    batch_size: 24
     dataset:
       com_transform:
         _target_: siaug.augmentations.ExtractKeys
@@ -28,7 +28,7 @@ dataloader:
             std: [0.2895694, 0.2895694, 0.2895694]
 
   valid:
-    batch_size: 16
+    batch_size: 24
     dataset:
       com_transform:
         _target_: siaug.augmentations.ExtractKeys

@@ -11,6 +11,7 @@ __all__ = [
     "SimSiamLoss",
     "NTXentLoss",
     "ConVIRTLoss",
+    "BinaryBCEWithLogitsLoss",
     "FocalLoss",
     "TriPodLoss",
 ]
@@ -83,6 +84,37 @@ class ConVIRTLoss(nn.Module):
     def forward(self, inputs: Dict[str, Tensor]) -> Tensor:
         img_proj, txt_proj = inputs["z1"], inputs["z2"]
         return ntxent_loss(img_proj, txt_proj, self.tau, self.weight, self.num_stability)
+
+
+class BinaryBCEWithLogitsLoss(nn.Module):
+    """BCEWithLogitsLoss wrapper with convenient config-friendly pos_weight support."""
+
+    def __init__(
+        self,
+        weight: torch.Tensor | None = None,
+        pos_weight: torch.Tensor | list[float] | None = None,
+        reduction: str = "mean",
+    ) -> None:
+        super().__init__()
+
+        if weight is not None and not isinstance(weight, torch.Tensor):
+            weight = torch.tensor(weight, dtype=torch.float)
+
+        if pos_weight is not None and not isinstance(pos_weight, torch.Tensor):
+            pos_weight = torch.tensor(pos_weight, dtype=torch.float)
+
+        self.register_buffer("weight", weight if weight is not None else None)
+        self.register_buffer("pos_weight", pos_weight if pos_weight is not None else None)
+        self.reduction = reduction
+
+    def forward(self, inputs: Tensor, targets: Tensor) -> Tensor:
+        return nn.functional.binary_cross_entropy_with_logits(
+            inputs,
+            targets.float(),
+            weight=self.weight,
+            pos_weight=self.pos_weight,
+            reduction=self.reduction,
+        )
 
 
 class FocalLoss(nn.Module):
@@ -174,7 +206,7 @@ class TriPodLoss(nn.Module):
 
         assert math.isclose(
             sum(lambdas.values()), 1.0
-        ), "Sum of the lambas for the TriPodLoss needs to be 1."
+        ), "Sum of the lambdas for the TriPodLoss needs to be 1."
 
         self.criterion = criterion
         self.lambdas = lambdas

@@ -12,6 +12,7 @@ from torch.utils.data import DataLoader
 from siaug.utils.extras import sanitize_dataloader_kwargs, set_seed
 from siaug.utils.repr import repr_epoch
 from siaug.utils.simsiam import CosineScheduler
+from siaug.utils.tracking import resolve_tracker, sanitize_tracker_config
 
 # set the project root
 root = pyrootutils.setup_root(__file__, dotenv=True, pythonpath=True)
@@ -34,13 +35,12 @@ def main(cfg: DictConfig):
         set_seed(seed)
 
     # setup accelerator
-    is_logging = cfg.get("logger", None) is not None
+    is_logging, logger_name, logger_kwargs, project_dir = resolve_tracker(cfg)
     print(f"=> Instantiate accelerator [logging={is_logging}]")
-    logger_name = "wandb" if is_logging else None
-    logger_kwargs = {"wandb": cfg.get("logger", None)}
+    tracker_config = sanitize_tracker_config(log_cfg, logger_name)
 
-    accelerator = Accelerator(log_with=logger_name, split_batches=True)
-    accelerator.init_trackers("siaug", config=log_cfg, init_kwargs=logger_kwargs)
+    accelerator = Accelerator(log_with=logger_name, project_dir=project_dir, split_batches=True)
+    accelerator.init_trackers("siaug", config=tracker_config, init_kwargs=logger_kwargs)
     device = accelerator.device
 
     # instantiate dataloaders

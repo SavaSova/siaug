@@ -66,13 +66,14 @@ def repr_epoch(
 
             # registered loggers
             if is_logging:
+                global_step = len(dataloader) * epoch + i
                 log_data = {
                     "epoch": epoch,
                     "epoch/loss": losses.avg,
                     "epoch/batch_time": batch_time.avg,
                     "epoch/data_time": data_time.avg,
                     "step": i,
-                    "step/global": len(dataloader) * epoch + i,
+                    "step/global": global_step,
                     "step/loss": losses.val,
                     "step/data_time": data_time.val,
                     "step/batch_time": batch_time.val,
@@ -84,7 +85,7 @@ def repr_epoch(
                     log_data[f"{name}/weight_decay"] = pg.get("weight_decay", 0)
                     log_data[f"{name}/lr"] = pg.get("lr", 0)
 
-                accelerator.log(log_data)
+                accelerator.log(log_data, step=global_step)
 
         if fast_dev_run:
             break

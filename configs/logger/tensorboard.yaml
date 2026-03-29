@@ -1,0 +1,2 @@
+backend: tensorboard
+flush_secs: 30

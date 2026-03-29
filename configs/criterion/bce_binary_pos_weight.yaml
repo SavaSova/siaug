@@ -1,0 +1,3 @@
+_target_: siaug.losses.BinaryBCEWithLogitsLoss
+reduction: mean
+pos_weight: [1.401843]
