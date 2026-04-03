@@ -133,7 +133,6 @@ dmypy.json
 
 # Project specific
 logs/
-notebooks/
 wandb/
 data/
 

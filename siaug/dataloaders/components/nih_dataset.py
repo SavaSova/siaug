@@ -95,7 +95,11 @@ class NIHDataset(Dataset):
     def __getitem__(self, idx: int):
         img_path, lbl = self.samples[idx]
         img = Image.open(img_path).convert("RGB")
-        sample = {"img": img, "lbl": np.array(lbl, dtype=np.float32)}
+        sample = {
+            "img": img,
+            "lbl": np.array(lbl, dtype=np.float32),
+            "img_path": img_path,
+        }
 
         if callable(self.img_transform):
             sample["img"] = self.img_transform(sample["img"])
