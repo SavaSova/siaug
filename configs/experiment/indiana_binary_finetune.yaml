@@ -1,0 +1,13 @@
+# @package _global_
+
+defaults:
+  - indiana_binary_baseline.yaml
+
+task_name: indiana_binary_finetune
+
+model:
+  freeze: false
+  ckpt_path: ${paths.project_dir}/logs/repr_indiana_baseline/runs/2026-05-05_00-53-11/checkpoints/last.pt/model.safetensors
+
+optimizer:
+  lr: 0.05

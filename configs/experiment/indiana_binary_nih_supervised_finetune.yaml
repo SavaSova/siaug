@@ -1,0 +1,41 @@
+# @package _global_
+
+defaults:
+  - indiana_binary_baseline.yaml
+
+task_name: indiana_binary_nih_supervised_finetune
+max_epoch: 30
+
+dataloader:
+  train:
+    batch_size: 8
+    dataset:
+      img_transform:
+        _target_: torchvision.transforms.Compose
+        transforms:
+          - _target_: torchvision.transforms.Resize
+            size: [256, 256]
+          - _target_: torchvision.transforms.RandomResizedCrop
+            size: 224
+            scale: [0.75, 1.0]
+          - _target_: torchvision.transforms.ColorJitter
+            brightness: 0.2
+            contrast: 0.2
+            saturation: 0.0
+            hue: 0.0
+          - _target_: torchvision.transforms.ToTensor
+          - _target_: torchvision.transforms.Normalize
+            mean: [0.50551915, 0.50551915, 0.50551915]
+            std: [0.2895694, 0.2895694, 0.2895694]
+
+  valid:
+    batch_size: 8
+
+model:
+  freeze: false
+  ckpt_path: ${paths.project_dir}/logs/lcls_nih_binary_finetune/runs/2026-03-28_09-22-20/checkpoints/best.pt/model.safetensors
+  prefix: null
+  reset_head: false
+
+optimizer:
+  lr: 0.001

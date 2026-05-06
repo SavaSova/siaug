@@ -138,3 +138,6 @@ data/
 
 # MacOS
 .DS_Store
+
+# Images
+*.png

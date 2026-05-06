@@ -1,0 +1,26 @@
+defaults:
+  - default.yaml
+
+train:
+  dataset:
+    _target_: siaug.dataloaders.IndianaBinaryDataset
+    reports_csv: ${paths.data_dir}/indiana/indiana_reports.csv
+    projections_csv: ${paths.data_dir}/indiana/indiana_projections.csv
+    images_dir: ${paths.data_dir}/indiana/images/images_normalized
+    list_path: ${paths.project_dir}/data_splits/indiana_binary/train_list.txt
+    projection: frontal
+    img_transform: ???
+    lbl_transform: null
+    com_transform: null
+
+valid:
+  dataset:
+    _target_: siaug.dataloaders.IndianaBinaryDataset
+    reports_csv: ${paths.data_dir}/indiana/indiana_reports.csv
+    projections_csv: ${paths.data_dir}/indiana/indiana_projections.csv
+    images_dir: ${paths.data_dir}/indiana/images/images_normalized
+    list_path: ${paths.project_dir}/data_splits/indiana_binary/valid_list.txt
+    projection: frontal
+    img_transform: ???
+    lbl_transform: null
+    com_transform: null

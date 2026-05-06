@@ -1,0 +1,38 @@
+# @package _global_
+
+defaults:
+  - indiana_binary_baseline.yaml
+
+task_name: indiana_binary_imagenet_baseline
+max_epoch: 30
+
+dataloader:
+  train:
+    batch_size: 16
+    dataset:
+      img_transform:
+        _target_: torchvision.transforms.Compose
+        transforms:
+          - _target_: torchvision.transforms.Resize
+            size: [256, 256]
+          - _target_: torchvision.transforms.RandomResizedCrop
+            size: 224
+            scale: [0.75, 1.0]
+          - _target_: torchvision.transforms.ColorJitter
+            brightness: 0.2
+            contrast: 0.2
+            saturation: 0.0
+            hue: 0.0
+          - _target_: torchvision.transforms.ToTensor
+          - _target_: torchvision.transforms.Normalize
+            mean: [0.50551915, 0.50551915, 0.50551915]
+            std: [0.2895694, 0.2895694, 0.2895694]
+
+  valid:
+    batch_size: 16
+
+model:
+  pretrained: true
+
+optimizer:
+  lr: 0.01

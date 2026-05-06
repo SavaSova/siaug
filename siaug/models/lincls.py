@@ -63,6 +63,9 @@ def create_lincls(
         else:
             model.load_state_dict(state_dict, strict=True)
 
+    elif kwargs.get("pretrained", False):
+        print("=> Using pretrained backbone weights from timm")
+
     else:
         print("=> Warning: no checkpoint was loaded!")
 
